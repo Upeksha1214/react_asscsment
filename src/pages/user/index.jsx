@@ -1,26 +1,13 @@
-import React, {useState} from "react";
+import React, {Component} from "react";
 import {Button, Grid, Paper, Table, TableCell, TableContainer, TableHead, TableRow, Typography} from "@mui/material";
+
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
-import GDSESnackBar from "../../components/snackBar";
 import PostService from "../../services/postService/PostService";
-import {setSelectionRange} from "@testing-library/user-event/dist/utils";
 
-
-function UserForm (props) {
-     const [username,setUserName]=useState("")
-     const [password,setPassword]=useState("")
-     const [email,setEmail]=useState("")
-     const [firstName,setFirstName]=useState("")
-     const [lastName,setLastName]=useState("")
-     const [city,setCity]=useState("")
-     const [street,setStreet]=useState("")
-     const [streetNo,setStreetNo]=useState("")
-     const [zipCode,setZipCode]=useState("")
-     const [latValue,setLatValue]=useState("")
-     const [longValue,setLongValue]=useState("")
-     const [mobileNo,setMobileNo]=useState("")
-
-        /*this.state = {
+class UserForm extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
             formData: {
                 firstName: '',
                 lastName: '',
@@ -38,45 +25,46 @@ function UserForm (props) {
 
             alert: false,
             message: '',
-            severity: '',*/
-
-
-     const saveCustomer  = async () =>{
-       var customerDts ={
-            "email":email,
-            "username":username,
-            "password": password,
-            "name": {
-            "firstname": firstName,
-                "lastname": lastName
-        },
-            "address": {
-            "city": city,
-                "street": street,
-                "number": streetNo,
-                "zipcode": zipCode,
-                "geolocation": {
-                "lat": latValue,
-                    "long": longValue
-            }
-        },
-            "phone": mobileNo
+            severity: ''
         }
     }
 
+    saveCustomer = async() => {
+        const customerDts = {
+            "email": this.state.email,
+            "username": this.state.userName,
+            "password": this.state.password,
+            "name": {
+                "firstname": this.state.firstName,
+                "lastname": this.state.lastName
+            },
+            "address": {
+                "city": this.state.city,
+                "street": this.state.street,
+                "number": this.state.streetNo,
+                "zipcode": this.state.zipCode,
+                "geolocation": {
+                    "lat": this.state.latValue,
+                    "long": this.state.longValue
+                }
+            },
+            "phone": this.state.mobileNo
+        }
 
-        const handleSubmit = async () => {
-        console.log(this.state.formData)
-        let formData = this.state.formData
-        let response = await PostService.createPost(formData);
-        if (response.status===201){
+        let response = await PostService.createPost(customerDts);
+        if (response.status===200){
             alert("Post Creates")
         }else{
             alert("un success")
         }
+
     }
 
+    handleSubmit = async () => {
 
+    }
+
+    render() {
         return (
             <>
                 <ValidatorForm
@@ -97,9 +85,11 @@ function UserForm (props) {
                                 variant="outlined"
                                 size="small"
                                 style={{width: '100%'}}
-                                value={firstName}
+                                value={this.state.formData.firstName}
                                 onChange={(e) => {
-                                    setFirstName(e.target.value)
+                                    let formData = this.state.formData
+                                    formData.firstName = e.target.value
+                                    this.setState({formData})
                                 }}
                                 validators={['required']}
                             />
@@ -112,9 +102,11 @@ function UserForm (props) {
                                 variant="outlined"
                                 size="small"
                                 style={{width: '100%'}}
-                                value={lastName}
+                                value={this.state.formData.lastName}
                                 onChange={(e) => {
-                                   setLastName(e.target.value)
+                                    let formData = this.state.formData
+                                    formData.lastName = e.target.value
+                                    this.setState({formData})
                                 }}
                                 validators={['required']}
                             />
@@ -127,9 +119,11 @@ function UserForm (props) {
                                 variant="outlined"
                                 size="small"
                                 style={{width: '100%'}}
-                                value={setEmail}
+                                value={this.state.formData.email}
                                 onChange={(e) => {
-                                    setEmail(e.target.value)
+                                    let formData = this.state.formData
+                                    formData.email = e.target.value
+                                    this.setState({formData})
                                 }}
                                 validators={['required']}
                             />
@@ -142,9 +136,11 @@ function UserForm (props) {
                                 variant="outlined"
                                 size="small"
                                 style={{width: '100%'}}
-                                value={setUserName}
+                                value={this.state.formData.userName}
                                 onChange={(e) => {
-                                    setUserName(e.target.value)
+                                    let formData = this.state.formData
+                                    formData.userName = e.target.value
+                                    this.setState({formData})
                                 }}
                                 validators={['required']}
                             />
@@ -157,9 +153,11 @@ function UserForm (props) {
                                 variant="outlined"
                                 size="small"
                                 style={{width: '100%'}}
-                                value={setPassword}
+                                value={this.state.formData.password}
                                 onChange={(e) => {
-                                    setPassword(e.target.value)
+                                    let formData = this.state.formData
+                                    formData.password = e.target.value
+                                    this.setState({formData})
                                 }}
                                 validators={['required']}
                             />
@@ -172,9 +170,11 @@ function UserForm (props) {
                                 variant="outlined"
                                 size="small"
                                 style={{width: '100%'}}
-                                value={setCity}
+                                value={this.state.formData.city}
                                 onChange={(e) => {
-                                    setCity(e.target.value)
+                                    let formData = this.state.formData
+                                    formData.city = e.target.value
+                                    this.setState({formData})
                                 }}
                                 validators={['required']}
                             />
@@ -187,9 +187,11 @@ function UserForm (props) {
                                 variant="outlined"
                                 size="small"
                                 style={{width: '100%'}}
-                                value={setStreet}
+                                value={this.state.formData.street}
                                 onChange={(e) => {
-                                    setStreet(e.target.value)
+                                    let formData = this.state.formData
+                                    formData.street = e.target.value
+                                    this.setState({formData})
                                 }}
                                 validators={['required']}
                             />
@@ -202,9 +204,11 @@ function UserForm (props) {
                                 variant="outlined"
                                 size="small"
                                 style={{width: '100%'}}
-                                value={setStreetNo}
+                                value={this.state.formData.streetNo}
                                 onChange={(e) => {
-                                    setStreetNo(e.target.value)
+                                    let formData = this.state.formData
+                                    formData.streetNo = e.target.value
+                                    this.setState({formData})
                                 }}
                                 validators={['required']}
                             />
@@ -217,9 +221,11 @@ function UserForm (props) {
                                 variant="outlined"
                                 size="small"
                                 style={{width: '100%'}}
-                                value={setZipCode}
+                                value={this.state.formData.zipCode}
                                 onChange={(e) => {
-                                    setZipCode(e.target.value)
+                                    let formData = this.state.formData
+                                    formData.zipCode = e.target.value
+                                    this.setState({formData})
                                 }}
                                 validators={['required']}
                             />
@@ -232,9 +238,11 @@ function UserForm (props) {
                                 variant="outlined"
                                 size="small"
                                 style={{width: '100%'}}
-                                value={setLatValue}
+                                value={this.state.formData.latValue}
                                 onChange={(e) => {
-                                    setLatValue(e.target.value)
+                                    let formData = this.state.formData
+                                    formData.latValue = e.target.value
+                                    this.setState({formData})
                                 }}
                                 validators={['required']}
                             />
@@ -247,9 +255,11 @@ function UserForm (props) {
                                 variant="outlined"
                                 size="small"
                                 style={{width: '100%'}}
-                                value={setLongValue}
+                                value={this.state.formData.longValue}
                                 onChange={(e) => {
-                                    setLongValue(e.target.value)
+                                    let formData = this.state.formData
+                                    formData.longValue = e.target.value
+                                    this.setState({formData})
                                 }}
                                 validators={['required']}
                             />
@@ -262,9 +272,11 @@ function UserForm (props) {
                                 variant="outlined"
                                 size="small"
                                 style={{width: '100%'}}
-                                value={setMobileNo}
+                                value={this.state.formData.mobileNo}
                                 onChange={(e) => {
-                                    setMobileNo(e.target.value)
+                                    let formData = this.state.formData
+                                    formData.mobileNo = e.target.value
+                                    this.setState({formData})
                                 }}
                                 validators={['required']}
                             />
@@ -274,15 +286,13 @@ function UserForm (props) {
                           container marginTop={"10px"}>
                         <Button size="small" variant="contained" color={"warning"}
                                 style={{marginRight: "10px"}}>Clear</Button>
-
                         <Button size="small" variant="contained" style={{marginRight: "10px"}} label="Save"
                                 type="submit"
-                                onClick={() =>{
-                                    saveCustomer();
+                                onClick={async () =>{
+                                   await this.saveCustomer()
                                 }}
-                        >
 
-                            Save</Button>
+                        >Save</Button>
                     </Grid>
                 </ValidatorForm>
                 <Grid>
@@ -308,19 +318,10 @@ function UserForm (props) {
                         </Table>
                     </TableContainer>
                 </Grid>
-                <GDSESnackBar
-                    open={this.state.alert}
-                    onClose={() => {
-                        this.setState({alert: false})
-                    }}
-                    message={this.state.message}
-                    autoHideDuration={3000}
-                    severity={this.state.severity}
-                    variant="filled"
-                />
+
             </>
         );
-
+    }
 }
 
 export default UserForm
