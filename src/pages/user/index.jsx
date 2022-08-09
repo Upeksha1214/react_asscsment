@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {Button, Grid, Paper, Table, TableCell, TableContainer, TableHead, TableRow, Typography} from "@mui/material";
 
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
-import PostService from "../../services/postService/PostService";
+import PostService from "../../services/adminService/adminService";
 
 class UserForm extends Component {
     constructor(props) {

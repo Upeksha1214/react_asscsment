@@ -1,10 +1,13 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import withStyles from "@material-ui/styles/withStyles";
 import {styleSheet} from "./style";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import {Navigate} from "react-router";
+import GetCookie from "../../hooks/getCookies";
+import SetCookie from "../../hooks/setCokkies";
+import adminService from "../../services/adminService/adminService";
 
 function Login(props) {
     const [isLogin,setLogin]=useState(false)
@@ -12,9 +15,45 @@ function Login(props) {
     const [password,setPassword]=useState("")
     const {classes} =props;
 
-    return (
+    const [token,setToken]=useState(false)
 
-        isLogin ? <Navigate to="/userForm" replace={true}/> :
+    const loginUser=async () =>{
+        const userAcc={
+            username : userName,
+            password : password
+        }
+        let response =await adminService.login(userAcc);
+        if (response.status==200){
+            SetCookie("loginToken",response.data.token)
+            props.setLogged()
+            setLogin(true)
+        }else{
+            alert("userName Or password Incorrect")
+        }
+    }
+
+
+    const checkTokenValidity=() =>{
+
+        if (GetCookie("MyToken")!=undefined) {
+            setToken(true)
+        }
+    }
+
+    const loadingDashBoard=() =>{
+        props.setLogged()
+        return <Navigate to="/dashBoard" replace={true} />
+    }
+
+    useEffect(() =>{
+        checkTokenValidity()
+    },[])
+
+
+    return (
+        token ? loadingDashBoard() :
+
+        isLogin ? <Navigate to="/dashBoard" replace={true}/> :
 
 
         <div className={classes.container}>
@@ -43,9 +82,8 @@ function Login(props) {
                 </div>
                 <div className={classes.btn__container}>
                     <Button variant="contained" type="submit" className="primary"
-                            onClick={() =>{
-                                props.setLogged();
-                                setLogin(true)
+                            onClick={async () =>{
+                                await loginUser()
                             }}
                     >Login</Button>
                 </div>

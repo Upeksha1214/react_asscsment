@@ -5,6 +5,7 @@ import UserForm from "../pages/user";
 import Product from "../pages/productManager";
 import CartManager from "../pages/cartManage";
 import PrivateRoute from "../parivateRoute";
+import DashBoard from "../pages/dashBorad";
 
 
 function App() {
@@ -19,7 +20,7 @@ function App() {
         <Routes>
 
             <Route element={<PrivateRoute isLogged={isLogged}/>}>
-                <Route  path="/userForm" element={<UserForm/>}></Route>
+                <Route  path="/dashBoard" element={<DashBoard/>}></Route>
             </Route>
             <Route path ="/" element={<Login setLogged={ChangeState}/>}/>
 
